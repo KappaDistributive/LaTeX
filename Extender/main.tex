@@ -27,16 +27,16 @@
     \draw ($(extender-crit) - (\markwidth, 0)$) -- ($(extender-crit) + (\markwidth,0)$);
     
     % label critical point
-    \draw ($(extender-crit) + (2 * \markwidth,0)$) node {#4};
+    \draw ($(extender-crit) + (\markwidth,0)$) node[right]{#4};
     
     % mark for length
     \draw ($(extender-crit) + (- \markwidth, \height)$) -- ($(extender-crit) + (\markwidth,\height)$);
     
     % label length
-    \draw ($(extender-crit) + (2 * \markwidth, \height)$) node {#7};
+    \draw ($(extender-crit) + (\markwidth, \height)$) node[right] {#7};
 
     % label extender
-    \draw ($(extender-crit) + (2 * \markwidth,0.5 * \height)$) node {#6};
+    \draw ($(extender-crit) + (2 * \markwidth,0.5 * \height)$) node[right] {#6};
 
     % draw index only if there is a nonempty label
     \def\temp{#5}\ifx\temp\empty
