@@ -1,0 +1,89 @@
+\documentclass[12pt,a4paper]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{scopes}
+
+\begin{document}
+\def\camera#1#2{
+\begin{scope}[shift={#1}, rotate=#2]
+    \draw [fill=black](0,0) -- (2,2.5) -- (-2,2.5) -- cycle;
+    \draw [fill=white,ultra thick](0,0) circle (1);
+\end{scope}
+}
+
+% #1 shift #2 width #3 height #4 label critical point #5 label index #6 label extender #7 label length
+\def\extender#1#2#3#4#5#6#7{
+  
+  \begin{scope}[shift={#1}]
+    \def \markwidth {.2};
+    \def \width {#2};
+    \def \height {#3};
+    % the indexratio is the ratio of the height of the index mark relative to the height of the extender
+    \def \indexratio {.75};
+    \coordinate (extender-crit) (0,0);
+    \coordinate (extender-length) ($(extender-crit) + (0,\height)$);
+    
+    % mark for critical point
+    \draw ($(extender-crit) - (\markwidth, 0)$) -- ($(extender-crit) + (\markwidth,0)$);
+    
+    % label critical point
+    \draw ($(extender-crit) + (\markwidth,0)$) node[right]{#4};
+    
+    % mark for length
+    \draw ($(extender-crit) + (- \markwidth, \height)$) -- ($(extender-crit) + (\markwidth,\height)$);
+    
+    % label length
+    \draw ($(extender-crit) + (\markwidth, \height)$) node[right] {#7};
+
+    % label extender
+    \draw ($(extender-crit) + (2 * \markwidth,0.5 * \height)$) node[right] {#6};
+
+    % draw index only if there is a nonempty label
+    \def\temp{#5}\ifx\temp\empty
+    
+    \else
+    % mark for index
+    \draw ($(extender-crit) + (- \markwidth, \indexratio * \height)$) -- ($(extender-crit) + (\markwidth, \indexratio * \height)$);
+
+    % label index
+    \draw ($(extender-crit) + (2 * \markwidth, \indexratio * \height)$) node {#5};
+    \fi
+   
+    
+    % extender from critical point to length
+    \draw (extender-crit) -- ($(extender-crit) + (\width,0)$)
+                          -- ($(extender-crit) + (\width, \height)$)
+                          -- ($(extender-crit) + (0, \height)$);
+
+                      
+  \end{scope}
+}
+
+\begin{tikzpicture}
+  % M
+  \draw (0,0) -- (0,12) node [above] {$M$};
+  \extender{(0,1)}{0}{0}{$\mu$}{}{}{};
+  \extender{(0,4)}{0}{0}{$\delta$}{}{}{};
+  \extender{(0,5)}{0}{0}{$\eta$}{}{}{};
+  \extender{(0,9)}{0}{0}{$\eta^{+M}$}{}{}{};
+
+  % \mathcal{M}^{\mathcal{T}}_{\eta +1}
+  \draw (5,0) -- (5,12) node[above]{$\mathcal{M}^{\mathcal{T}}_{\eta +1}$};
+  \extender{(5,5)}{0}{0}{$\eta$}{}{}{};
+  \extender{(5,6)}{0}{0}{$\pi^{\mathcal{T}}_{0, \eta+1}(\mu)$}{}{}{};
+  \extender{(5,7)}{0}{0}{$\pi^{\mathcal{T}}_{0, \eta+1}(\delta)$}{}{}{};
+  \extender{(5,9)}{0}{0}{$\eta^{+M}$}{}{}{};
+  \draw[->] (0,1) -- (5,6);
+  \draw[->] (0,4) -- (5,7);
+
+  % genericity iteration
+  \draw (5.5,6.5) -- (10,8);
+  \draw (5.5,6.5) -- (10,5);
+  \draw (10.5,0) -- (10.5,9) node[above left] {$\mathcal{M}(\mathcal{T})$};
+  \draw (10.3,9) -- (10.7,9) node[right]{$\delta(\mathcal{T})$};
+
+  % P-construction
+  \draw[dashed,->] (5,7) -- (10.5,9);
+  \draw[dashed] (10.5,9) -- (10.5,12) node[above] {$\mathcal{P}(\mathcal{M}(\mathcal{T}))$};
+\end{tikzpicture}
+\end{document}
