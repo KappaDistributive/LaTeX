@@ -1,0 +1,39 @@
+\documentclass[12pt,a4paper]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{scopes}
+\usepackage{arrayjob}
+
+\begin{document}
+
+
+\def\game#1#2#3#4{
+  % #1 shift #2 number of entries #3 player I's entries #4 player II's entries
+  \begin{scope}[shift={#1}]
+    % label for players I and II
+    \node at (0,1) {I};
+    \node at (0,0) {II};
+    % board
+    \draw (-.5,.5) -- ($(1,.5) + (#2,0)$);
+    \draw (.5,-.5) -- (.5,1.5);
+
+    \foreach \i in {1,...,#2}{
+      % player I's moves
+      \node at ($(0,1) + (\i,0)$) {#3(\i)};
+      % player II's moves
+      \node at ($(.5,0) + (\i,0)$) {#4(\i)};
+  }
+  \end{scope}
+}
+
+\newarray\playerI
+\newarray\playerII
+
+\readarray{playerI}{1&2&3}
+\readarray{playerII}{a&b&c}
+
+
+\begin{tikzpicture}
+  \game{(0,0)}{3}{\playerI}{\playerII};
+\end{tikzpicture}
+\end{document}
